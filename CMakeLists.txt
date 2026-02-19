@@ -1,0 +1,11 @@
+idf_component_register(
+    SRCS
+        "src/web_socket.c"
+    INCLUDE_DIRS
+        "include"
+    REQUIRES
+        esp-utils
+    PRIV_REQUIRES
+        mbedtls
+        esp_timer
+)
