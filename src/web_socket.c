@@ -257,7 +257,7 @@ void ws_server_start(void (*receiver)(const char *message)) {
     struct sockaddr_in server_addr;
     server_addr.sin_family = AF_INET;
     server_addr.sin_addr.s_addr = htonl(INADDR_ANY);
-    server_addr.sin_port = htons(WS_SERVER_PORT);
+    server_addr.sin_port = htons(CONFIG_WS_SERVER_PORT);
 
     if (bind(server_fd, (struct sockaddr *)&server_addr, sizeof(server_addr)) !=
         0) {
@@ -267,14 +267,14 @@ void ws_server_start(void (*receiver)(const char *message)) {
         return;
     }
 
-    if (listen(server_fd, WS_MAX_CLIENTS) != 0) {
+    if (listen(server_fd, CONFIG_WS_MAX_CLIENTS) != 0) {
         ESP_LOGE(TAG, "Error occurred during listen: errno %d", errno);
         close(server_fd);
         server_fd = -1;
         return;
     }
 
-    ESP_LOGI(TAG, "WebSocket server listening on port %d", WS_SERVER_PORT);
+    ESP_LOGI(TAG, "WebSocket server listening on port %d", CONFIG_WS_SERVER_PORT);
 
     xTaskCreate(ws_server_task, "ws_server_task", 4096, receiver, 5, &ws_server_task_handle);
 
@@ -353,14 +353,14 @@ static void ws_handle_client(void *param) {
 
     ESP_LOGI(TAG, "WebSocket handshake successful for client fd=%d", client->fd);
 
-    char *buffer = log_malloc(TAG, "ws_handle_client_buffer", WS_RECV_BUFFER_SIZE);
+    char *buffer = log_malloc(TAG, "ws_handle_client_buffer", CONFIG_WS_RECV_BUFFER_SIZE);
     if (!buffer) {
         ESP_LOGE(TAG, "Failed to allocate buffer");
         goto cleanup;
     }
 
     while (!client->shutdown_requested) {
-        int len = ws_recv_frame(client->fd, buffer, WS_RECV_BUFFER_SIZE);
+        int len = ws_recv_frame(client->fd, buffer, CONFIG_WS_RECV_BUFFER_SIZE);
         if (len < 0) {
             break;
         }
@@ -371,7 +371,9 @@ static void ws_handle_client(void *param) {
         buffer[len] = '\0';
         ESP_LOGI(TAG, "Received: %s", buffer);
 
-        client->receiver(buffer);
+        if (client->receiver != NULL) {
+            client->receiver(buffer);
+        }
     }
 
     log_free(TAG, buffer);

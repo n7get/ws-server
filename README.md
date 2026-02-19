@@ -87,7 +87,17 @@ Returns the number of messages currently pending in the send queue.
 
 ## Configuration
 
-The following constants in `include/web_socket.h` can be adjusted:
+These options are configurable via ESP-IDF menuconfig:
+
+```bash
+idf.py menuconfig
+```
+
+Navigate to:
+
+- `Component config` → `WebSocket Server`
+
+Available options:
 
 | Constant | Default | Description |
 |---|---|---|

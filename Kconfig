@@ -1,0 +1,24 @@
+menu "WebSocket Server"
+
+    config WS_SERVER_PORT
+        int "WebSocket server port"
+        range 1 65535
+        default 8080
+        help
+            TCP port used by the WebSocket server listener.
+
+    config WS_MAX_CLIENTS
+        int "Maximum concurrent clients"
+        range 1 16
+        default 4
+        help
+            Maximum number of simultaneous client connections accepted by listen().
+
+    config WS_RECV_BUFFER_SIZE
+        int "Receive buffer size (bytes)"
+        range 256 16384
+        default 2048
+        help
+            Per-client receive buffer size used when parsing incoming WebSocket frames.
+
+endmenu

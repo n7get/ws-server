@@ -2,13 +2,10 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include "sdkconfig.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "lwip/sockets.h"
-
-#define WS_SERVER_PORT 8080
-#define WS_MAX_CLIENTS 4
-#define WS_RECV_BUFFER_SIZE 2048
 
 // WebSocket frame opcodes
 #define WS_OPCODE_CONTINUATION 0x0
