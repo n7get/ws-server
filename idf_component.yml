@@ -6,6 +6,7 @@ dependencies:
   idf:
     version: ">=5.0.0"
   esp-utils:
+    git: 'https://github.com/n7get/esp-utils.git'
     version: "1.0.0"
 
 targets:
